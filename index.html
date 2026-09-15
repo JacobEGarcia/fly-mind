@@ -2,126 +2,41 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>FLY MIND — the first uploaded brain</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Fly Mind - Drosophila connectome study</title>
+<meta name="description" content="An interactive study of 139,255 mapped fruit-fly neurons and 743,322 strong connections derived from FlyWire data.">
 <style>
-  :root{
-    --amber:#ffb300; --amber2:#ff8f00; --cyan:#37e6ff; --bg:#05060a; --panel:rgba(10,14,22,.82);
-    --txt:#e8eef5; --dim:#8a97a8;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--txt);
-    font-family:'Space Mono',monospace;}
-  #scene{position:fixed;inset:0;touch-action:none}
-  .panel{position:fixed;background:var(--panel);border:1px solid rgba(255,179,0,.25);
-    backdrop-filter:blur(8px);padding:14px 16px;border-radius:4px;z-index:10}
-  #title{top:18px;left:18px;max-width:430px}
-  #title h1{font-size:26px;letter-spacing:4px;color:var(--amber);font-weight:700}
-  #title h1 span{color:var(--cyan)}
-  #title p{margin-top:6px;font-size:11.5px;line-height:1.55;color:var(--dim)}
-  #title .big{color:var(--txt)}
-  #hud{top:18px;right:18px;text-align:right;font-size:11px;line-height:1.7;color:var(--dim);min-width:190px}
-  #hud .v{color:var(--cyan);font-size:13px}
-  #hud #behavior{color:var(--amber);font-size:13px;letter-spacing:2px}
-  #stim{bottom:18px;left:18px;display:flex;flex-direction:column;gap:8px;max-width:250px}
-  #stim .lbl{font-size:10px;letter-spacing:2px;color:var(--dim);margin-bottom:2px}
-  .sbtn{cursor:pointer;border:1px solid rgba(55,230,255,.4);background:rgba(55,230,255,.06);
-    color:var(--cyan);font-family:inherit;font-size:12px;letter-spacing:1.5px;padding:9px 12px;
-    border-radius:3px;text-align:left;transition:all .15s}
-  .sbtn:hover{background:rgba(55,230,255,.18);color:#fff}
-  .sbtn.hot{background:rgba(255,179,0,.18);border-color:var(--amber);color:var(--amber)}
-  .sbtn small{display:block;color:var(--dim);font-size:9.5px;letter-spacing:.5px;margin-top:2px}
-  #info{bottom:18px;right:18px;max-width:400px;font-size:10.5px;line-height:1.6;color:var(--dim)}
-  #info h2{font-size:11px;color:var(--amber);letter-spacing:2px;margin-bottom:5px}
-  #info a{color:var(--cyan);text-decoration:none}
-  #info a:hover{text-decoration:underline}
-  #info .tog{cursor:pointer;user-select:none}
-  #info .body{display:none;margin-top:6px}
-  #info.open .body{display:block}
-  #loading{position:fixed;inset:0;background:var(--bg);z-index:100;display:flex;
-    flex-direction:column;align-items:center;justify-content:center;gap:14px}
-  #loading h1{color:var(--amber);letter-spacing:6px;font-size:22px}
-  #bar{width:280px;height:3px;background:#1a2230}
-  #bar i{display:block;height:100%;width:0;background:var(--cyan);transition:width .2s}
-  #loadmsg{font-size:10.5px;color:var(--dim);letter-spacing:1px}
-  #toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:50;
-    color:var(--amber);font-size:13px;letter-spacing:3px;pointer-events:none;opacity:0;transition:opacity .3s}
-  @media (max-width:760px){
-    #title{max-width:60vw}#title h1{font-size:17px}
-    #info{display:none}
-    #hud{font-size:10px;min-width:140px}
-    #stim{max-width:200px}
-  }
+:root{--paper:#f3f0e8;--ink:#171717;--muted:#68655e;--line:#c9c3b8;--red:#c4422f;--soft:#e7e1d6}
+*{box-sizing:border-box}html{background:var(--paper);color:var(--ink)}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--paper);color:var(--ink)}button{font:inherit;color:inherit}.study{min-height:100svh;display:grid;grid-template-rows:auto minmax(0,1fr) auto;border-bottom:1px solid var(--line)}
+.masthead{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;padding:22px 28px 18px;border-bottom:1px solid var(--line)}.folio{font:11px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--red);padding-top:7px}.identity h1{font:400 clamp(35px,4.6vw,68px)/.92 Georgia,serif;letter-spacing:-.045em;margin:0}.kicker{margin:8px 0 0;font-size:12px;letter-spacing:.035em}.deck{max-width:760px;margin:9px 0 0;color:var(--muted);font:14px/1.45 Georgia,serif}
+.workspace{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 250px}.plate{position:relative;min-height:460px;overflow:hidden;border-right:1px solid var(--line);touch-action:none}#scene{position:absolute;inset:0}#scene canvas{display:block;width:100%;height:100%}.preview{position:absolute;inset:0;width:100%;height:100%;color:#373530;opacity:.84}.preview .nerve{fill:none;stroke:currentColor;stroke-width:.65;stroke-opacity:.32}.preview circle{fill:currentColor;opacity:.72}.preview .mark{stroke:var(--red);stroke-width:1.2;stroke-opacity:.75}
+.loading{position:absolute;z-index:4;left:24px;bottom:22px;max-width:360px;background:var(--paper);border-top:1px solid var(--ink);padding:10px 0 0}.loading strong{display:block;font:18px/1.15 Georgia,serif}.loading p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.4}.progress{width:280px;max-width:70vw;height:2px;margin-top:10px;background:var(--line)}.progress i{display:block;width:0;height:100%;background:var(--red)}#retry{display:none;margin-top:10px;min-height:44px;padding:0 14px;background:transparent;border:1px solid var(--ink);cursor:pointer}.ready .preview,.ready .loading{display:none}
+.controls{padding:22px 20px 18px;display:flex;flex-direction:column;background:var(--paper)}.controls h2{font:400 21px/1.2 Georgia,serif;margin:0 0 12px}.controls .note{color:var(--muted);font-size:11px;line-height:1.45;margin:0 0 10px}.sbtn{display:grid;grid-template-columns:22px 1fr;align-items:center;min-height:49px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;padding:0;cursor:pointer}.sbtn:last-of-type{border-bottom:1px solid var(--line)}.sbtn .radio{width:12px;height:12px;border:1px solid var(--ink);border-radius:50%}.sbtn.hot .radio{background:var(--red);border-color:var(--red)}.sbtn.hot{color:var(--red)}.sbtn b{font-size:12px;font-weight:500}.sbtn small{display:block;color:var(--muted);font-size:9px;margin-top:2px}.reset{align-self:flex-start;margin-top:auto;min-height:44px;border:0;background:transparent;text-decoration:underline;text-underline-offset:3px;padding:8px 0;cursor:pointer;font-size:11px}.gesture{color:var(--muted);font-size:10px;margin:8px 0 0}
+.caption{display:grid;grid-template-columns:1.4fr .65fr .65fr .8fr;gap:18px;border-top:1px solid var(--line);padding:11px 28px;color:var(--muted);font-size:10px;line-height:1.35}.caption span{display:block;color:var(--ink);margin-top:2px;font-variant-numeric:tabular-nums}.caption a{color:inherit}.method{max-width:950px;margin:0 auto;padding:72px 28px 90px}.method .eyebrow{color:var(--red);font:10px ui-monospace,SFMono-Regular,Menlo,monospace}.method h2{font:400 clamp(32px,5vw,58px)/1 Georgia,serif;letter-spacing:-.035em;margin:15px 0 24px}.method .copy{display:grid;grid-template-columns:1fr 1fr;gap:55px}.method p{font:15px/1.65 Georgia,serif;margin:0;color:#34322e}.method a{color:var(--ink);text-underline-offset:3px}#toast{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--paper);border:1px solid var(--ink);padding:8px 11px;font-size:10px;opacity:0;pointer-events:none;transition:opacity .2s}
+@media(max-width:760px){.study{min-height:auto;display:block}.masthead{padding:18px}.folio{display:none}.identity h1{font-size:42px}.deck{font-size:13px}.workspace{display:flex;flex-direction:column}.plate{height:41svh;min-height:290px;border-right:0;border-bottom:1px solid var(--line);order:1}.controls{order:2;padding:16px 18px 12px}.controls h2{font-size:18px;margin-bottom:6px}.controls .note{display:none}.sbtn{min-height:42px}.reset{margin-top:6px}.gesture{position:absolute;left:18px;top:calc(41svh - 30px);z-index:5}.caption{grid-template-columns:1fr 1fr;padding:11px 18px;gap:10px 18px}.caption div:first-child{grid-column:1/-1}.loading{left:18px;bottom:16px;right:18px}.method{padding:54px 18px 70px}.method .copy{grid-template-columns:1fr;gap:22px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
+<main class="study">
+<header class="masthead"><span class="folio">FM / 01</span><div class="identity"><h1>Fly Mind</h1><p class="kicker">Drosophila connectome study</p><p class="deck">Explore how visual, sensory, memory, navigation, and motor circuits pass activity through a mapped nervous system. The stimulus modes are an interpretive simulation, not a biological brain running in the browser.</p></div></header>
+<div class="workspace">
+<section class="plate" aria-label="Interactive three-dimensional map of the FlyWire fruit-fly connectome">
 <div id="scene"></div>
-
-<div id="loading">
-  <h1>FLY&nbsp;MIND</h1>
-  <div id="bar"><i></i></div>
-  <div id="loadmsg">waking the connectome…</div>
+<svg class="preview" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><g class="nerve"><path d="M170 270C250 100 365 104 440 250S620 420 738 245"/><path d="M147 203C285 216 300 390 457 295S620 95 760 196"/><path d="M185 345C330 422 338 80 500 175S630 350 720 335"/><path d="M255 112C280 250 520 260 650 120"/><path d="M250 410C400 320 490 420 666 375"/><path d="M120 275C290 295 610 260 790 240" class="mark"/></g><g id="dots"></g><script>const g=document.currentScript.parentNode.querySelector('#dots');for(let i=0;i&lt;340;i++){const a=i*.618033*6.283,r=55+190*((i%53)/53),x=450+Math.cos(a)*r*(1.25+.2*Math.sin(i)),y=260+Math.sin(a)*r*.72;const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',i%17?1.3:2.3);g.appendChild(c)}</script></svg>
+<div class="loading" id="loading"><strong>Loading connectome geometry</strong><p id="loadmsg">Preparing the mapped neurons and connections.</p><div class="progress"><i id="bar"></i></div><button id="retry" type="button">Retry visualization</button></div><div id="toast"></div>
+</section>
+<nav class="controls" aria-label="Stimulate a circuit"><h2>Stimulate a circuit</h2><p class="note">Select a mapped neuron class to seed simulated activity through the published wiring.</p>
+<button class="sbtn" data-p="vision"><span class="radio"></span><span><b>Vision</b><small>visual projection neurons</small></span></button>
+<button class="sbtn" data-p="descend"><span class="radio"></span><span><b>Escape</b><small>descending pathways</small></span></button>
+<button class="sbtn" data-p="sensory"><span class="radio"></span><span><b>Odor</b><small>sensory neurons</small></span></button>
+<button class="sbtn" data-p="ascending"><span class="radio"></span><span><b>Memory</b><small>ascending pathways</small></span></button>
+<button class="sbtn" data-p="motor"><span class="radio"></span><span><b>Navigate</b><small>modeled motor output</small></span></button>
+<button class="reset" data-p="reset">Clear activity</button><p class="gesture">Drag to orbit · scroll or pinch to zoom · tap the brain to probe</p></nav>
 </div>
-
-<div class="panel" id="title">
-  <h1>FLY<span>MIND</span></h1>
-  <p><span class="big">139,255 real neurons. 743,322 real synapses.</span><br>
-  The actual FlyWire connectome of <i>Drosophila melanogaster</i> — every point is a real
-  neuron's soma mapped from electron microscopy — running live in your browser.
-  In March 2026, Eon Systems ran this whole brain inside a virtual body.
-  This is the brain, in your hands. Stimulate it.</p>
-</div>
-
-<div class="panel" id="hud">
-  <div>ACTIVE NEURONS <span class="v" id="h-active">0</span></div>
-  <div>SPIKES / SEC <span class="v" id="h-spikes">0</span></div>
-  <div>STIMULUS <span class="v" id="h-stim">none</span></div>
-  <div>VIRTUAL FLY <span id="behavior">IDLE</span></div>
-</div>
-
-<div class="panel" id="stim">
-  <div class="lbl">OPTogenetic STIMULATION</div>
-  <button class="sbtn" data-p="vision">▸ VISION<small>visual projection neurons — show it the world</small></button>
-  <button class="sbtn" data-p="optic">▸ OPTIC LOBES<small>77,873 optic neurons — half the brain sees</small></button>
-  <button class="sbtn" data-p="sensory">▸ SENSORY NERVES<small>touch, taste, smell, hearing</small></button>
-  <button class="sbtn" data-p="descend">▸ ESCAPE / WALK<small>1,305 descending neurons — brain → body</small></button>
-  <button class="sbtn" data-p="motor">▸ MOTOR OUTPUT<small>110 motor neurons — move the legs</small></button>
-  <button class="sbtn" data-p="reset">✕ RESET<small>let the brain fall silent</small></button>
-  <div class="lbl" style="margin-top:6px">OR CLICK ANYWHERE ON THE BRAIN</div>
-</div>
-
-<div class="panel" id="info">
-  <div class="tog"><h2>▼ THE SCIENCE + THE DATA</h2></div>
-  <div class="body">
-    In March 2026, <a href="https://eon.systems/" target="_blank">Eon Systems</a> announced the first
-    embodied whole-brain emulation: a copy of a fruit fly's brain, wired neuron-to-neuron from real
-    electron-microscopy data, driving a physics-simulated body — walking, grooming, feeding
-    (<a href="https://www.theregister.com/offbeat/2026/03/16/digital_fly_brain_simulation/" target="_blank">The Register</a>,
-    <a href="https://github.com/eonsystemspbc/fly-brain" target="_blank">open-source model</a>).<br><br>
-    The wiring comes from <a href="https://flywire.ai/" target="_blank">FlyWire</a>: 139,255 neurons and
-    ~50 million synapses, proofread by thousands of gamers and scientists
-    (Dorkenwald et al., <i>Nature</i> 2024). A 2024 <i>Nature</i> model (Shiu et al.) predicted
-    the real fly's neural activity with ~91% accuracy from connectivity alone.<br><br>
-    This piece renders the real soma positions of all 139,255 neurons and the real 743,322
-    strongest synaptic connections (≥12 synapses each). Coloring is by cell class; pulses travel
-    the actual wiring. The fly below reacts to activity in its real descending and motor neurons.<br><br>
-    Data derived from FlyWire FAFB v783, CC BY-NC 4.0. Cite: Dorkenwald et al. 2024,
-    doi:10.1038/s41586-024-07558-y · Schlegel et al. 2024, doi:10.1038/s41586-024-07686-5.<br>
-    Built by Jacob × Instinct, Sept 2026.
-  </div>
-</div>
-
-<div id="toast"></div>
-
-<script type="importmap">
-{"imports":{
-  "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-}}
-</script>
+<footer class="caption"><div>Dataset<span>FlyWire FAFB v783 · CC BY-NC 4.0</span></div><div>Neurons loaded<span id="n-count">0</span></div><div>Edges loaded<span id="e-count">0</span></div><div>Selected circuit<span id="selected">None</span></div></footer>
+</main>
+<section class="method"><span class="eyebrow">METHOD / SOURCES</span><h2>A map, made explorable.</h2><div class="copy"><p>This study renders soma positions for 139,255 neurons and 743,322 strong connections, defined here as 12 or more synapses, from FlyWire FAFB v783. Dark points and lines show mapped structure. Specimen red shows activity seeded by the selected circuit.</p><p>Activity is an interpretive network-propagation model for exploring structure. It is not a biological prediction, a claim of consciousness, or a brain upload. Data comes from the <a href="https://flywire.ai/" target="_blank" rel="noopener">FlyWire community reconstruction</a>. See Dorkenwald et al., <a href="https://doi.org/10.1038/s41586-024-07558-y" target="_blank" rel="noopener"><i>Nature</i> 2024</a>, and Schlegel et al., <a href="https://doi.org/10.1038/s41586-024-07686-5" target="_blank" rel="noopener">2024</a>. Built by Jacob Garcia, September 2026.</p></div></section>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <script type="module" src="app.js"></script>
-</body>
-</html>
+</body></html>
